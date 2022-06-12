@@ -1,3 +1,5 @@
+// ignore_for_file: unused_element
+
 import 'dart:io';
 
 import 'package:chat/widget/chat_message.dart';
@@ -14,7 +16,7 @@ class ChatPage extends StatefulWidget {
 class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
   final _texcontroller = TextEditingController();
   final _focusNode = FocusNode();
-  List<ChatMessage> _messages = [];
+  final List<ChatMessage> _messages = [];
 
   bool _estaEscribiendo = false;
   @override
@@ -27,7 +29,7 @@ class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
             CircleAvatar(
               backgroundColor: Colors.blue[100],
               maxRadius: 14,
-              child: Text('Te', style: TextStyle(fontSize: 12)),
+              child: const Text('Te', style: TextStyle(fontSize: 12)),
             ),
             const SizedBox(height: 3),
             const Text('Pedrito ',
@@ -37,25 +39,23 @@ class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
         centerTitle: true,
         elevation: 1,
       ),
-      body: Container(
-        child: Column(
-          children: [
-            Flexible(
-                child: ListView.builder(
-              itemCount: _messages.length,
-              reverse: true,
-              physics: const BouncingScrollPhysics(),
-              itemBuilder: (_, int index) => _messages[index],
-            )),
-            const Divider(height: 1),
-            //caja de texto
-            Container(
-              // height:100,
-              color: Colors.white,
-              child: _inputChat(),
-            )
-          ],
-        ),
+      body: Column(
+        children: [
+          Flexible(
+              child: ListView.builder(
+            itemCount: _messages.length,
+            reverse: true,
+            physics: const BouncingScrollPhysics(),
+            itemBuilder: (_, int index) => _messages[index],
+          )),
+          const Divider(height: 1),
+          //caja de texto
+          Container(
+            // height:100,
+            color: Colors.white,
+            child: _inputChat(),
+          )
+        ],
       ),
     );
   }
@@ -72,7 +72,7 @@ class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
             onChanged: (String texto) {
               //cuando hay un valor
               setState(() {
-                if (texto.trim().length > 0) {
+                if (texto.trim().isNotEmpty) {
                   _estaEscribiendo = true;
                 } else {
                   _estaEscribiendo = false;
@@ -89,7 +89,7 @@ class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
           Container(
             margin: const EdgeInsets.symmetric(horizontal: 4.0),
             child: Platform.isIOS
-                ? CupertinoButton(child: Text('Enviar'), onPressed: () {})
+                ? CupertinoButton(child: const Text('Enviar'), onPressed: () {})
                 : Container(
                     margin: const EdgeInsets.symmetric(horizontal: 4.0),
                     child: IconTheme(
@@ -113,7 +113,6 @@ class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
 
   _handeleSubmit(String texto) {
     if (texto.isEmpty) return;
-    print(texto);
     _focusNode.requestFocus();
     _texcontroller.clear();
 
@@ -121,7 +120,9 @@ class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
       texto: texto,
       uid: '123',
       animationController: AnimationController(
-          vsync: this, duration: const Duration(milliseconds: 400)),
+          vsync: this, duration: const Duration(milliseconds: 400)
+          
+          ),
     );
     _messages.insert(0, newMessage);
     newMessage.animationController.forward();
@@ -131,7 +132,6 @@ class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
 
     @override
     void dispose() {
-      // TODO: apagar el socket
       for (ChatMessage message in _messages) {
         message.animationController.dispose();
       }

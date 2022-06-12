@@ -4,7 +4,7 @@ class BontonAzul extends StatelessWidget {
 
   final Color color;
   final String text;
-  final Function  onPress;
+  final Function?  onPress;
 
   const BontonAzul({super.key, required this.color, required this.text, required this.onPress}); 
 
@@ -12,14 +12,17 @@ class BontonAzul extends StatelessWidget {
   Widget build(BuildContext context) {
     return ElevatedButton(
         style: ElevatedButton.styleFrom(
-            elevation: 2, shape: StadiumBorder(), primary: color),
-        onPressed: () {
-          onPress();
-        },
-        child: Container(
+            elevation: 2, shape: const StadiumBorder(), primary: color),
+        onPressed: 
+        
+        onPress != null ? 
+        () {
+          onPress!();
+        } : null,
+        child: SizedBox(
             height: 55,
             width: double.infinity,
             child: Center(
-                child: Text(text, style: TextStyle(fontSize: 17)))));
+                child: Text(text, style: const TextStyle(fontSize: 17)))));
   }
 }

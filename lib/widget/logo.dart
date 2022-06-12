@@ -8,13 +8,13 @@ final String titulo;
   Widget build(BuildContext context) {
     return Center(
       child: Container(
-        margin: EdgeInsets.only(top: 50),
+        margin: const EdgeInsets.only(top: 50),
         child: Column(
           children: [
-            Container(
+            const SizedBox(
                 width: 170,
                 child: Image(image: AssetImage('assets/tag-logo.png'))),
-            Text(titulo, style: TextStyle(fontSize: 30)),
+            Text(titulo, style: const TextStyle(fontSize: 30)),
           ],
         ),
       ),

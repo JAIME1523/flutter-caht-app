@@ -1,4 +1,9 @@
+// ignore_for_file: use_build_context_synchronously
+
+import 'package:chat/helper/mostrar_alerta.dart';
+import 'package:chat/services/auth_service.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../widget/widgets.dart';
 
@@ -19,7 +24,11 @@ class LoginPage extends StatelessWidget {
               children: const [
                 Logo(titulo: 'Messenger'),
                 _From(),
-                Labels(ruta: 'register', text1: '¿No tienes cuenta?', text2: 'Crea una ahora!',),
+                Labels(
+                  ruta: 'register',
+                  text1: '¿No tienes cuenta?',
+                  text2: 'Crea una ahora!',
+                ),
                 Text('Terminos y condiciones de suso ',
                     style: TextStyle(fontWeight: FontWeight.w200))
               ],
@@ -44,6 +53,10 @@ class __FromState extends State<_From> {
 
   @override
   Widget build(BuildContext context) {
+    final authServices = Provider.of<AuthServices>(
+      context,
+    );
+
     return Container(
       margin: const EdgeInsets.only(top: 50),
       padding: const EdgeInsets.symmetric(horizontal: 50),
@@ -62,7 +75,25 @@ class __FromState extends State<_From> {
           ),
 
           // TextField(),
-          BontonAzul(color: Colors.blue, text: 'Ingresar', onPress: () {})
+          BontonAzul(
+              color: Colors.blue,
+              text: 'Ingresar',
+              onPress: authServices.autenticando
+                  ? null
+                  : () async {
+                      FocusScope.of(context).unfocus();
+                      final loginOk = await authServices.login(
+                          emailCtrl.text.trim(), passCtrl.text.trim());
+
+                      if (loginOk) {
+                        //navegar a otra pantalla
+                        //conectar a nuestro token server;
+                        Navigator.pushReplacementNamed(context, 'usuarios');
+                      } else {
+                        //Mostrar alerta
+                        motsrarAlerta((context), 'Login incorrecto', 'Rebice sus credenciales ');
+                      }
+                    })
         ],
       ),
     );

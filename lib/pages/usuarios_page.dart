@@ -1,7 +1,11 @@
+import 'dart:async';
+
+import 'package:chat/services/auth_service.dart';
 import 'package:flutter/material.dart';
-import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import 'package:chat/models/usuario.dart';
+import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
+import 'package:provider/provider.dart';
 
 class UsuariosPage extends StatefulWidget {
   const UsuariosPage({Key? key}) : super(key: key);
@@ -11,8 +15,10 @@ class UsuariosPage extends StatefulWidget {
 }
 
 class _UsuariosPageState extends State<UsuariosPage> {
-  final RefreshController _refreshController =
-      RefreshController(initialRefresh: false);
+  // final RefreshController _refreshController =
+  //     RefreshController(initialRefresh: false);
+  final GlobalKey<LiquidPullToRefreshState> _refreshIndicatorKey =
+      GlobalKey<LiquidPullToRefreshState>();
 
   final List<Usuario> usuarios = [
     Usuario(email: 'hola@correo', nombre: 'jose', uid: '1', online: true),
@@ -22,9 +28,11 @@ class _UsuariosPageState extends State<UsuariosPage> {
   ];
   @override
   Widget build(BuildContext context) {
+    final authServices = Provider.of<AuthServices>(context);
+    final usuario = authServices.usuario;
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Usuarios", style: TextStyle(color: Colors.black87)),
+        title:  Text(usuario.nombre.toString(), style: const TextStyle(color: Colors.black87)),
         elevation: 1,
         backgroundColor: Colors.white,
         leading: IconButton(
@@ -32,7 +40,11 @@ class _UsuariosPageState extends State<UsuariosPage> {
             Icons.exit_to_app,
             color: Colors.black87,
           ),
-          onPressed: () {},
+          onPressed: () {
+            //desconectar del socket
+            Navigator.pushReplacementNamed(context, 'login');
+            AuthServices.deleteToken();
+          },
         ),
         actions: [
           Container(
@@ -41,15 +53,25 @@ class _UsuariosPageState extends State<UsuariosPage> {
               child: Icon(Icons.offline_bolt, color: Colors.red[400]))
         ],
       ),
-      body: SmartRefresher(
-        controller: _refreshController,
-        enablePullDown: true,
-        onRefresh: _cargarUsuarios,
-        header: WaterDropHeader(
-          complete: Icon(Icons.check, color: Colors.blue[400]),
-          waterDropColor: Colors.blue,
-        ),
-        child: _listViewUsuarios(),
+      body:
+
+          // _listViewUsuarios(),
+
+          //  SmartRefresher(
+
+          //     controller: _refreshController,
+          //     enablePullDown: true,
+          //     onRefresh: _cargarUsuarios,
+          //     header: WaterDropHeader(
+          //       complete: Icon(Icons.check, color: Colors.blue[400]),
+          //       waterDropColor: Colors.blue,
+          //     ),
+          //     child: _listViewUsuarios(),
+          //   ),
+          LiquidPullToRefresh(
+        key: _refreshIndicatorKey, // key if you want to add
+        onRefresh: _handleRefresh, // refresh callback
+        child: _listViewUsuarios(), // scroll view
       ),
     );
   }
@@ -62,9 +84,34 @@ class _UsuariosPageState extends State<UsuariosPage> {
     );
   }
 
-  void _cargarUsuarios() async {
-    await Future.delayed(Duration(milliseconds: 1000));
-    _refreshController.refreshCompleted();
+  //  _cargarUsuarios() async {
+  //   await Future.delayed(Duration(milliseconds: 1000));
+  //   // _refreshController.refreshCompleted();
+  // }
+
+  Future<void> _handleRefresh() async {
+    final Completer<void> completer = Completer<void>();
+    Timer(const Duration(seconds: 3), () {
+      completer.complete();
+    });
+
+    // print('recarga');
+    setState(() {
+      // refreshNum = Random().nextInt(100);
+    });
+    // return completer.future.then<void>((_) {z
+    //   ScaffoldMessenger.of(_scaffoldKey.currentState!.context).showSnackBar(
+    //     SnackBar(
+    //       content: const Text('Refresh complete'),
+    //       action: SnackBarAction(
+    //         label: 'RETRY',
+    //         onPressed: () {
+    //           _refreshIndicatorKey.currentState!.show();
+    //         },
+    //       ),
+    //     ),
+    //   );
+    // });
   }
 }
 

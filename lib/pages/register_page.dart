@@ -1,4 +1,9 @@
+// ignore_for_file: use_build_context_synchronously
+
+import 'package:chat/helper/mostrar_alerta.dart';
+import 'package:chat/services/auth_service.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../widget/widgets.dart';
 
@@ -51,6 +56,9 @@ class __FromState extends State<_From> {
 
   @override
   Widget build(BuildContext context) {
+    final authServices = Provider.of<AuthServices>(
+      context,
+    );
     return Container(
       margin: const EdgeInsets.only(top: 50),
       padding: const EdgeInsets.symmetric(horizontal: 50),
@@ -76,7 +84,27 @@ class __FromState extends State<_From> {
           ),
 
           // TextField(),
-          BontonAzul(color: Colors.blue, text: 'Regsitar', onPress: () {})
+          BontonAzul(
+              color: Colors.blue,
+              text: 'Regsitar',
+              onPress: authServices.autenticando
+                  ? null
+                  : () async {
+                      FocusScope.of(context).unfocus();
+                      final registrerOk = await authServices.registrer(
+                          nombreCtrl.text, emailCtrl.text, passCtrl.text);
+
+                      if (registrerOk == true) {
+                        //navegar a otra pantalla
+                        //conectar a nuestro token server;
+                        Navigator.pushReplacementNamed(context, 'usuarios');
+                        // authServices.registrer(nombreCtrl.text, emailCtrl.text, passCtrl.text);
+                      } else {
+                        //Mostrar alerta
+                        motsrarAlerta((context), 'Login incorrecto',
+                            registrerOk);
+                      }
+                    })
         ],
       ),
     );
