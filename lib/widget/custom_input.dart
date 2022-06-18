@@ -12,10 +12,8 @@ class CustomImput extends StatelessWidget {
       required this.icon,
       required this.placeholder,
       required this.textController,
-       this.keyboardRype = TextInputType.text,
-       this.isPassword = false
-      
-      });
+      this.keyboardRype = TextInputType.text,
+      this.isPassword = false});
 
   @override
   Widget build(BuildContext context) {
@@ -32,9 +30,9 @@ class CustomImput extends StatelessWidget {
               blurRadius: 5,
             )
           ]),
-      child:  TextField(
-        obscureText: isPassword,
-        controller: textController,
+      child: TextField(
+          obscureText: isPassword,
+          controller: textController,
           autocorrect: false,
           keyboardType: keyboardRype,
           decoration: InputDecoration(

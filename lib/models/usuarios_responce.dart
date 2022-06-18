@@ -6,27 +6,30 @@ import 'dart:convert';
 
 import 'package:chat/models/usuario.dart';
 
-UsuariosResponce usuariosResponceFromJson(String str) => UsuariosResponce.fromJson(json.decode(str));
+UsuariosResponce usuariosResponceFromJson(String str) =>
+    UsuariosResponce.fromJson(json.decode(str));
 
-String usuariosResponceToJson(UsuariosResponce data) => json.encode(data.toJson());
+String usuariosResponceToJson(UsuariosResponce data) =>
+    json.encode(data.toJson());
 
 class UsuariosResponce {
-    UsuariosResponce({
-        this.ok,
-        this.usuarios,
-    });
+  UsuariosResponce({
+    this.ok,
+    this.usuarios,
+  });
 
-    bool? ok;
-    List<Usuario>? usuarios;
+  bool? ok;
+  List<Usuario>? usuarios;
 
-    factory UsuariosResponce.fromJson(Map<String, dynamic> json) => UsuariosResponce(
+  factory UsuariosResponce.fromJson(Map<String, dynamic> json) =>
+      UsuariosResponce(
         ok: json["ok"],
-        usuarios: List<Usuario>.from(json["usuarios"].map((x) => Usuario.fromJson(x))),
-    );
+        usuarios: List<Usuario>.from(
+            json["usuarios"].map((x) => Usuario.fromJson(x))),
+      );
 
-    Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => {
         "ok": ok,
         "usuarios": List<dynamic>.from(usuarios!.map((x) => x.toJson())),
-    };
+      };
 }
-

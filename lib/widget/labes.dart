@@ -19,9 +19,7 @@ class Labels extends StatelessWidget {
           // '¿No tienes cuenta?',
           text1,
           style: const TextStyle(
-              color: Colors.black54,
-              fontSize: 15,
-              fontWeight: FontWeight.w400),
+              color: Colors.black54, fontSize: 15, fontWeight: FontWeight.w400),
         ),
         const SizedBox(
           height: 10,
@@ -29,12 +27,11 @@ class Labels extends StatelessWidget {
         GestureDetector(
           child: Text(text2,
               // 'Crea una ahora! ',
-              style:const  TextStyle(
+              style: const TextStyle(
                   color: Colors.blue,
                   fontSize: 18,
                   fontWeight: FontWeight.bold)),
           onTap: () {
-            
             Navigator.pushReplacementNamed(context, ruta);
           },
         )

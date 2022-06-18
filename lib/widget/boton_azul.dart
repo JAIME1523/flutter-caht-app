@@ -1,24 +1,26 @@
 import 'package:flutter/material.dart';
 
 class BontonAzul extends StatelessWidget {
-
   final Color color;
   final String text;
-  final Function?  onPress;
+  final Function? onPress;
 
-  const BontonAzul({super.key, required this.color, required this.text, required this.onPress}); 
+  const BontonAzul(
+      {super.key,
+      required this.color,
+      required this.text,
+      required this.onPress});
 
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
         style: ElevatedButton.styleFrom(
             elevation: 2, shape: const StadiumBorder(), primary: color),
-        onPressed: 
-        
-        onPress != null ? 
-        () {
-          onPress!();
-        } : null,
+        onPressed: onPress != null
+            ? () {
+                onPress!();
+              }
+            : null,
         child: SizedBox(
             height: 55,
             width: double.infinity,

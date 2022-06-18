@@ -4,4 +4,4 @@ export 'package:chat/widget/logo.dart';
 
 export 'package:chat/widget/custom_input.dart';
 
-export  'package:chat/widget/labes.dart';
+export 'package:chat/widget/labes.dart';

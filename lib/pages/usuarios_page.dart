@@ -20,9 +20,9 @@ class UsuariosPage extends StatefulWidget {
 class _UsuariosPageState extends State<UsuariosPage> {
   // final RefreshController _refreshController =
   //     RefreshController(initialRefresh: false);
-    final usuarioServide = UsuariosService();
+  final usuarioServide = UsuariosService();
 
- List<Usuario> usuarios = [];
+  List<Usuario> usuarios = [];
   final GlobalKey<LiquidPullToRefreshState> _refreshIndicatorKey =
       GlobalKey<LiquidPullToRefreshState>();
 
@@ -37,8 +37,8 @@ class _UsuariosPageState extends State<UsuariosPage> {
   void initState() {
     super.initState();
     _handleRefresh();
-
   }
+
   @override
   Widget build(BuildContext context) {
     final authServices = Provider.of<AuthServices>(context);
@@ -110,13 +110,11 @@ class _UsuariosPageState extends State<UsuariosPage> {
   Future<void> _handleRefresh() async {
     final Completer<void> completer = Completer<void>();
 
-   usuarios = (await  usuarioServide.getUsuarios())!;
+    usuarios = (await usuarioServide.getUsuarios())!;
 
-   setState(()  {
+    setState(() {});
 
-   });
-
-   completer.complete();
+    completer.complete();
     // Timer(const Duration(seconds: 3), () {
     //   completer.complete();
     // });
@@ -167,7 +165,7 @@ class _UsuarioListTile extends StatelessWidget {
             color: usuarios.online! ? Colors.green[300] : Colors.red,
             borderRadius: BorderRadius.circular(100)),
       ),
-      onTap: (){
+      onTap: () {
         final chatService = Provider.of<ChatServices>(context, listen: false);
 
         chatService.usuarioPara = usuarios;
