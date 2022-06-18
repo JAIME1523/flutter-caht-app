@@ -2,6 +2,7 @@
 
 import 'package:chat/helper/mostrar_alerta.dart';
 import 'package:chat/services/auth_service.dart';
+import 'package:chat/services/socket_services.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -56,9 +57,9 @@ class __FromState extends State<_From> {
 
   @override
   Widget build(BuildContext context) {
-    final authServices = Provider.of<AuthServices>(
-      context,
-    );
+    final authServices = Provider.of<AuthServices>(context);
+    final socketService = Provider.of<SocketService>(context);
+
     return Container(
       margin: const EdgeInsets.only(top: 50),
       padding: const EdgeInsets.symmetric(horizontal: 50),
@@ -97,12 +98,13 @@ class __FromState extends State<_From> {
                       if (registrerOk == true) {
                         //navegar a otra pantalla
                         //conectar a nuestro token server;
+                        socketService.connect();
                         Navigator.pushReplacementNamed(context, 'usuarios');
                         // authServices.registrer(nombreCtrl.text, emailCtrl.text, passCtrl.text);
                       } else {
                         //Mostrar alerta
-                        motsrarAlerta((context), 'Login incorrecto',
-                            registrerOk);
+                        motsrarAlerta(
+                            (context), 'Login incorrecto', registrerOk);
                       }
                     })
         ],
